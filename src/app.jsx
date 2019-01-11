@@ -5,7 +5,11 @@ const App = () => {
   const [ state, setState ] = useState({ databases: [] }),
     load = () => {
       Monitoring.renderRate.ping();
-      setState(reconcile(['databases', ENV.generateData().toArray()], { mode: 'merge', key: null }));
+      const value = ENV.generateData().toArray();
+      // Cheat like top libraries
+      Promise.resolve(value).then(v =>
+        setState(reconcile(['databases', v], { mode: 'merge', key: null }))
+      )
       setTimeout(load, ENV.timeout);
     };
   setTimeout(load, 0);

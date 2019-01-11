@@ -9,7 +9,7 @@ export default {
 	output: {
 		// sourcemap: true,
 		format: 'iife',
-		file: 'dist/bundle.js',
+		file: 'dist/app.js',
 	},
 	plugins: [
 		babel({
