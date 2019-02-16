@@ -1,8 +1,8 @@
-import { root, useState, reconcile } from 'solid-js';
+import { createRoot, createState, reconcile } from 'solid-js';
 import { r } from 'solid-js/dom';
 
 const App = () => {
-  const [ state, setState ] = useState({ databases: [] }),
+  const [ state, setState ] = createState({ databases: [] }),
     load = () => {
       Monitoring.renderRate.ping();
       const value = ENV.generateData().toArray();
@@ -25,8 +25,8 @@ const App = () => {
           <td class={( query.elapsedClassName )}>
             {( query.formatElapsed )}
             <div class="popover left">
-                <div class="popover-content">{( query.query )}</div>
-                <div class="arrow" />
+              <div class="popover-content">{( query.query )}</div>
+              <div class="arrow" />
             </div>
           </td>
         }</$>
@@ -35,4 +35,4 @@ const App = () => {
   </tbody></table>
 }
 
-root(() => document.getElementById('dbmon').appendChild(<App />))
+createRoot(() => document.getElementById('dbmon').appendChild(<App />))
