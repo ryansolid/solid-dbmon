@@ -1,5 +1,4 @@
 import { createRoot, createState, reconcile } from 'solid-js';
-import { r } from 'solid-js/dom';
 
 const App = () => {
   const [ state, setState ] = createState({ databases: [] }),
