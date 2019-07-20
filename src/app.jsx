@@ -1,4 +1,5 @@
-import { createRoot, createState, reconcile } from 'solid-js';
+import { createState, reconcile } from 'solid-js';
+import { render } from 'solid-js/dom';
 
 const App = () => {
   const [ state, setState ] = createState({ databases: [] }),
@@ -14,13 +15,13 @@ const App = () => {
   setTimeout(load, 0);
 
   return <table class="table table-striped latest-data"><tbody>
-    <$ each={ state.databases }>{ db =>
+    <For each={( state.databases )}>{ db =>
       <tr>
         <td class="dbname" textContent={ db.dbname } />
         <td class="query-count">
           <span class={( db.lastSample.countClassName )}>{( db.lastSample.nbQueries )}</span>
         </td>
-        <$ each={ db.lastSample.topFiveQueries }>{query =>
+        <For each={( db.lastSample.topFiveQueries )}>{query =>
           <td class={( query.elapsedClassName )}>
             {( query.formatElapsed )}
             <div class="popover left">
@@ -28,10 +29,10 @@ const App = () => {
               <div class="arrow" />
             </div>
           </td>
-        }</$>
+        }</For>
       </tr>
-    }</$>
+    }</For>
   </tbody></table>
 }
 
-createRoot(() => document.getElementById('dbmon').appendChild(<App />))
+render(App, document.getElementById('dbmon'));
