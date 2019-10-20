@@ -1,38 +1,51 @@
-import { createState, reconcile } from 'solid-js';
-import { render } from 'solid-js/dom';
+import { createState, reconcile } from "solid-js";
+import { render } from "solid-js/dom";
 
 const App = () => {
-  const [ state, setState ] = createState({ databases: [] }),
+  const [state, setState] = createState({ databases: [] }),
     load = () => {
       Monitoring.renderRate.ping();
       const value = ENV.generateData().toArray();
       // Cheat like top libraries
       Promise.resolve(value).then(v =>
-        setState(reconcile(['databases', v], { merge: true, key: null }))
-      )
+        setState(reconcile(["databases", v], { merge: true, key: null }))
+      );
       setTimeout(load, ENV.timeout);
     };
   setTimeout(load, 0);
 
-  return <table class="table table-striped latest-data"><tbody>
-    <For each={( state.databases )}>{ db =>
-      <tr>
-        <td class="dbname" textContent={ db.dbname } />
-        <td class="query-count">
-          <span class={( db.lastSample.countClassName )}>{( db.lastSample.nbQueries )}</span>
-        </td>
-        <For each={( db.lastSample.topFiveQueries )}>{query =>
-          <td class={( query.elapsedClassName )}>
-            {( query.formatElapsed )}
-            <div class="popover left">
-              <div class="popover-content">{( query.query )}</div>
-              <div class="arrow" />
-            </div>
-          </td>
-        }</For>
-      </tr>
-    }</For>
-  </tbody></table>
-}
+  return (
+    <table class="table table-striped latest-data">
+      <tbody>
+        <For each={state.databases}>
+          {db => {
+            const dbName = db.dbName;
+            return (
+              <tr>
+                <td class="dbname" textContent={dbName} />
+                <td class="query-count">
+                  <span class={db.lastSample.countClassName}>
+                    {db.lastSample.nbQueries}
+                  </span>
+                </td>
+                <For each={db.lastSample.topFiveQueries}>
+                  {query => (
+                    <td class={query.elapsedClassName}>
+                      {query.formatElapsed}
+                      <div class="popover left">
+                        <div class="popover-content">{query.query}</div>
+                        <div class="arrow" />
+                      </div>
+                    </td>
+                  )}
+                </For>
+              </tr>
+            );
+          }}
+        </For>
+      </tbody>
+    </table>
+  );
+};
 
-render(App, document.getElementById('dbmon'));
+render(App, document.getElementById("dbmon"));
