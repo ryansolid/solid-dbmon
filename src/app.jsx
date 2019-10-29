@@ -24,16 +24,20 @@ const App = () => {
               <tr>
                 <td class="dbname" textContent={dbName} />
                 <td class="query-count">
-                  <span class={db.lastSample.countClassName}>
-                    {db.lastSample.nbQueries}
-                  </span>
+                  <span
+                    class={db.lastSample.countClassName}
+                    textContent={db.lastSample.nbQueries}
+                  />
                 </td>
                 <For each={db.lastSample.topFiveQueries}>
                   {query => (
                     <td class={query.elapsedClassName}>
                       {query.formatElapsed}
                       <div class="popover left">
-                        <div class="popover-content">{query.query}</div>
+                        <div
+                          class="popover-content"
+                          textContent={query.query}
+                        />
                         <div class="arrow" />
                       </div>
                     </td>
