@@ -8,7 +8,7 @@ const App = () => {
       const value = ENV.generateData().toArray();
       // Cheat like top libraries
       Promise.resolve(value).then(v =>
-        setState(reconcile(["databases", v], { merge: true, key: null }))
+        setState("databases", reconcile(v, { merge: true, key: null }))
       );
       setTimeout(load, ENV.timeout);
     };
