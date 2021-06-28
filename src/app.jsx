@@ -1,8 +1,8 @@
-import { createState, reconcile } from "solid-js";
-import { render } from "solid-js/dom";
+import { createStore, reconcile } from "solid-js/store";
+import { render } from "solid-js/web";
 
 const App = () => {
-  const [state, setState] = createState({ databases: [] }),
+  const [state, setState] = createStore({ databases: [] }),
     load = () => {
       Monitoring.renderRate.ping();
       const value = ENV.generateData().toArray();
